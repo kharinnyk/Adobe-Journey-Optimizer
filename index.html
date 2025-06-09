@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Estudos: AJO for Developers com Gemini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .bg-custom-pink-light { background-color: #FFF9FA; }
+        .text-custom-pink-strong { color: #D6336C; }
+        .text-custom-pink-medium { color: #E6799B; }
+        .border-custom-pink-subtle { border-color: #FFE4E9; }
+        .shadow-custom-pink { box-shadow: 0 8px 30px rgba(224, 172, 185, 0.15); }
+        .bg-custom-pink-highlight { background-color: #FFF0F3; }
+        .border-custom-pink-medium { border-color: #E6799B; }
+        .use-case-card {
+            background-color: white; border: 1px solid #FFE4E9; border-radius: 0.5rem;
+            padding: 1rem; transition: all 0.2s ease-in-out; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .use-case-card:hover { transform: translateY(-5px); box-shadow: 0 4px 20px rgba(224, 172, 185, 0.2); }
+        .action-button {
+            background-color: #D6336C; color: white; padding: 6px 12px;
+            border-radius: 6px; font-weight: 500; font-size: 0.8rem;
+            margin-top: 8px; transition: background-color 0.2s; cursor: pointer; border: none;
+        }
+        .action-button:hover { background-color: #a62352; }
+        .action-button-secondary { background-color: #fce7f3; color: #D6336C; }
+        .action-button-secondary:hover { background-color: #f9d8e8; }
+        .highlight-section { border: 2px solid #D6336C; padding: 1.25rem; margin: -1.25rem; border-radius: 0.75rem; background-color: #fffafb; }
+        #gemini-modal { display: none; }
+    </style>
+</head>
+<body class="bg-custom-pink-light">
+
+    <!-- Container Principal -->
+    <div class="container mx-auto max-w-5xl w-full my-10 p-5">
+        <div class="bg-white rounded-2xl p-8 sm:p-12 shadow-custom-pink border border-custom-pink-subtle">
+            
+            <header class="text-center mb-12">
+                <h1 class="text-4xl sm:text-5xl font-bold text-custom-pink-strong">Guia de Estudos IA</h1>
+                <p class="text-xl text-gray-600 mt-2">Adobe Journey Optimizer: Developer – Expert</p>
+            </header>
+
+            <!-- Seletor de Perfil -->
+            <div class="mb-12 bg-custom-pink-highlight p-4 rounded-lg flex items-center justify-center space-x-3">
+                <label for="profile-selector" class="font-semibold text-gray-700">Meu perfil é:</label>
+                <select id="profile-selector" class="rounded-md border-custom-pink-medium focus:ring-custom-pink-strong focus:border-custom-pink-strong">
+                    <option value="todos">Todos</option>
+                    <option value="dev">Desenvolvedor(a)</option>
+                    <option value="mkt">Marketing</option>
+                    <option value="data">Analista de Dados</option>
+                </select>
+            </div>
+
+            <div class="space-y-16">
+                
+                <!-- Seção de Explicação PQL -->
+                <section id="pql-explanation" data-profile="dev,data">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">📂</span>Como Funciona a Estrutura PQL (Pastas e Subpastas)</h2>
+                    <div class="space-y-6 text-gray-700 leading-relaxed text-justify">
+                        <p>No Adobe Journey Optimizer, os dados do perfil não são planos. Eles são organizados em uma estrutura hierárquica, muito parecida com pastas e subpastas no seu computador. Para acessar um dado específico, você usa a "notação de ponto" (o ponto final), que funciona como a barra "/" nos caminhos de arquivos.</p>
+                        <div class="bg-custom-pink-highlight p-5 rounded-lg border-l-4 border-custom-pink-medium">
+                            <h3 class="font-semibold text-lg text-custom-pink-strong mb-2">Exemplo Prático (Educação):</h3>
+                            <p>Imagine que os dados de um aluno estão organizados assim:</p>
+                            <pre class="bg-gray-100 p-3 rounded-md mt-2 text-sm overflow-x-auto">
+profile
+ L academicInfo
+ |  L courses
+ |  |  L math101
+ |  |  |  L finalGrade: "A"
+ |  |  |  L status: "completed"
+ |  |  L history202
+ |  |     L finalGrade: "B"
+ |  |     L status: "in_progress"
+ L personalInfo
+    L city: "São Paulo"
+                            </pre>
+                            <p class="mt-2">Para pegar a nota final de matemática, sua consulta PQL seria:</p>
+                            <p class="font-mono text-custom-pink-strong bg-white p-2 rounded mt-1">profile.academicInfo.courses.math101.finalGrade</p>
+                            <p class="mt-2">Isso é como navegar até <strong>`Perfil/InfoAcadêmica/Cursos/Matemática101/notaFinal.txt`</strong>. O ponto é a chave para navegar nesta estrutura e criar segmentos muito precisos.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seções de Conteúdo -->
+                <section id="segmentos" data-profile="dev,mkt,data">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">🧩</span>02. Construção de Segmentos</h2>
+                    <p>Agrupar perfis com características comuns para experiências personalizadas, usando a interface visual ou editando consultas <strong>PQL (Profile Query Language)</strong> diretamente.</p>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <label for="pql-generator-input" class="font-semibold text-gray-700">Gerador de Código PQL:</label>
+                        <input type="text" id="pql-generator-input" placeholder="Ex: alunos de SP que completaram o curso de matemática..." class="w-full mt-1 p-2 border border-gray-300 rounded-md">
+                        <button class="action-button mt-2" data-action="generate-code" data-type="pql" data-input-id="pql-generator-input">⚙️ Gerar Código PQL</button>
+                    </div>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="use-case-card" data-title="Potenciais Alunos" data-rule="Visitou a página do curso de 'Engenharia' e baixou o guia do curso." data-action="Enviar email com depoimento de um ex-aluno de Engenharia."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">🎓 Potenciais Alunos</h4><p class="text-sm"><strong>Regra:</strong> Visitou a página do curso de "Engenharia" e baixou o guia do curso. <strong>Ação:</strong> Enviar email com depoimento de um ex-aluno de Engenharia.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                        <div class="use-case-card" data-title="Aluno em Risco de Evasão" data-rule="Não acessa o portal há 15 dias e tem notas baixas." data-action="Enviar notificação push e, se sem resposta, alertar o tutor."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📉 Aluno em Risco de Evasão</h4><p class="text-sm"><strong>Regra:</strong> Não acessa o portal há 15 dias e tem notas baixas. <strong>Ação:</strong> Enviar notificação push e, se sem resposta, alertar o tutor.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                    <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Construção de Segmentos com PQL">📝 Me teste!</button></div>
+                </section>
+                
+                <!-- Adicionando todas as outras seções com as novas funcionalidades -->
+                <section id="canal-web" data-profile="dev,mkt">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">🌐</span>03. Canal Web</h2>
+                    <p>Personalizar conteúdo no seu site em tempo real instalando um snippet JavaScript da Adobe, que permite ao AJO modificar a página com base no perfil do visitante.</p>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="use-case-card" data-title="Banner de Boas-Vindas" data-rule="Um aluno loga no portal pela primeira vez." data-action="Exibir um banner de boas-vindas personalizado: 'Olá, [Nome do Aluno]! Que bom ter você aqui. Que tal um tour pelo portal?'. O tom deve ser amigável e convidativo."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">👋 Banner de Boas-Vindas</h4><p class="text-sm"><strong>Cenário:</strong> Aluno loga pela primeira vez. <strong>Ação:</strong> Exibir um banner de boas-vindas.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                        <div class="use-case-card" data-title="Recomendação de Cursos" data-rule="Um visitante anônimo visualizou páginas sobre 'Ciência de Dados'." data-action="Na homepage, exibir o texto para uma seção 'Cursos que talvez você goste' mostrando a pós-graduação em 'Inteligência Artificial'."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">🎯 Recomendação de Cursos</h4><p class="text-sm"><strong>Cenário:</strong> Visitante anônimo viu páginas de "Ciência de Dados". <strong>Ação:</strong> Exibir seção de recomendação de cursos.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                     <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Personalização de Canal Web com Adobe Journey Optimizer">📝 Me teste!</button></div>
+                </section>
+
+                <section id="personalizacao" data-profile="dev,mkt">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">🎨</span>04. Personalização e Gestão de Conteúdo</h2>
+                    <p>Usar dados do perfil para criar conteúdo dinâmico com <strong>helper functions</strong> e lógica condicional para exibir blocos diferentes para segmentos distintos.</p>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="use-case-card" data-title="Lembrete de Prova Dinâmico" data-rule="Um email sobre provas da semana é enviado para todos os alunos." data-action="Rascunhe um email que usa conteúdo dinâmico: um bloco de 'Matemática' só para alunos de exatas, e um bloco de 'História' só para alunos de humanas."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📅 Lembrete de Prova</h4><p class="text-sm"><strong>Cenário:</strong> Email de provas. <strong>Ação:</strong> Usar conteúdo dinâmico para cada matéria.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                        <div class="use-case-card" data-title="Mensalidade em Atraso Formatada" data-rule="Email de cobrança para mensalidade vencida." data-action="Rascunhe o corpo de um email de cobrança que usa uma helper function para formatar a data, como: 'Sua mensalidade venceu em <%= formatDate(profile.academic.dueDate, 'dd/MM/yyyy') %>'."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">💰 Mensalidade em Atraso</h4><p class="text-sm"><strong>Cenário:</strong> Email de cobrança. <strong>Ação:</strong> Usar helper function para formatar a data.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                     <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Personalização e Gestão de Conteúdo com Helper Functions">📝 Me teste!</button></div>
+                </section>
+
+                <section id="acoes-custom" data-profile="dev">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">🛠️</span>05. Ações Personalizadas</h2>
+                    <p>Conectar o AJO com <strong>sistemas externos via API</strong>. O desenvolvedor configura uma "Ação" para enviar dados do perfil do AJO para um CRM, SMS, etc.</p>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                         <div class="use-case-card" data-title="Integrar com CRM Acadêmico" data-rule="Um aluno preenche um formulário de 'Interesse em Transferência'." data-action="Rascunhar o texto para uma notificação interna (para o time de admissões) a ser enviada pelo CRM, informando sobre o novo lead e sugerindo um contato telefônico."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📞 Integrar com CRM Acadêmico</h4><p class="text-sm"><strong>Cenário:</strong> Aluno preenche formulário. <strong>Ação:</strong> Enviar dados para o CRM via Ação Personalizada.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                         <div class="use-case-card" data-title="Enviar SMS para Eventos" data-rule="Um aluno se inscreve no vestibular." data-action="Um dia antes da prova, rascunhar um SMS de lembrete com local e horário. O texto deve ser curto e direto."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">💬 Enviar SMS para Eventos</h4><p class="text-sm"><strong>Cenário:</strong> Aluno se inscreve no vestibular. <strong>Ação:</strong> Acionar envio de SMS via provedor externo.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                     <div class="mt-4 flex space-x-2"><button class="action-button action-button-secondary" data-action="quiz" data-context="Ações Personalizadas e integração de API no AJO">📝 Me teste!</button><button class="action-button action-button-secondary" data-action="diagram" data-context="Fluxo de uma Ação Personalizada que envia dados de um formulário no site para um CRM externo">📊 Gerar Diagrama</button></div>
+                </section>
+
+                <section id="governanca-evento" data-profile="dev,data">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">⚖️</span>06. Configuração e Governança do Evento</h2>
+                    <p>Definir, coletar e manter dados de eventos (ex: "curso visto") usando o <strong>Experience Data Model (XDM)</strong> para padronizar os esquemas e garantir consistência.</p>
+                     <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                         <div class="use-case-card" data-title="Padronizar Eventos de Inscrição" data-rule="É preciso definir um evento padrão para a submissão de uma inscrição em um curso." data-action="Descreva a importância de ter um evento XDM padrão chamado 'applicationSubmitted' que deve ser usado tanto pelo site quanto pelo app, garantindo que a métrica de novas inscrições seja unificada e confiável para relatórios."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">✔️ Padronizar Eventos</h4><p class="text-sm"><strong>Cenário:</strong> Definir o evento de submissão de inscrição. <strong>Ação:</strong> Criar um evento XDM "applicationSubmitted" para uso no site e app.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                         <div class="use-case-card" data-title="Rastrear Engajamento em Vídeos" data-rule="Queremos medir o interesse dos alunos em aulas EAD." data-action="Explique como criar um evento 'videoCompleted' com um campo 'videoName'. Em seguida, rascunhe uma notificação para um gestor de marketing sobre o benefício disso: 'Agora podemos segmentar alunos que assistiram 100% da aula de Cálculo!'"><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📹 Rastrear Engajamento</h4><p class="text-sm"><strong>Cenário:</strong> Medir interesse em aulas EAD. <strong>Ação:</strong> Definir evento "videoCompleted" para segmentar por vídeo assistido.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                     <div class="mt-4 flex space-x-2"><button class="action-button action-button-secondary" data-action="quiz" data-context="Governança de Eventos com XDM no AJO">📝 Me teste!</button><button class="action-button action-button-secondary" data-action="diagram" data-context="Fluxo de um evento 'videoViewed' desde o player de vídeo no site, passando pela coleta de dados do AJO, até a qualificação para um segmento 'Engajados com Vídeo'">📊 Gerar Diagrama</button></div>
+                </section>
+                
+                <section id="consulta-dados" data-profile="data">
+                     <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">🔍</span>07. Consulta Avançada de Dados</h2>
+                    <p>Usar o <strong>Query Service</strong> para executar consultas <strong>SQL</strong> diretamente nos dados do AEP para análises profundas e relatórios complexos.</p>
+                     <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <label for="sql-generator-input" class="font-semibold text-gray-700">Gerador de Código SQL:</label>
+                        <input type="text" id="sql-generator-input" placeholder="Ex: contagem de alunos por cidade que se inscreveram no último mês..." class="w-full mt-1 p-2 border border-gray-300 rounded-md">
+                        <button class="action-button mt-2" data-action="generate-code" data-type="sql" data-input-id="sql-generator-input">⚙️ Gerar Código SQL</button>
+                    </div>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                         <div class="use-case-card" data-title="Análise de Funil de Inscrição" data-rule="Precisamos entender a jornada do vestibular em detalhes." data-action="Rascunhe um email para um analista de dados pedindo um relatório com a seguinte análise de funil, usando o Query Service: 1. Nº de usuários que visitaram a página. 2. Nº que se inscreveram. 3. Nº que pagaram a taxa. 4. Nº que compareceram."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📊 Análise de Funil</h4><p class="text-sm"><strong>Cenário:</strong> Entender jornada do vestibular. <strong>Ação:</strong> Escrever SQL para contar usuários em cada etapa do funil.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                         <div class="use-case-card" data-title="Identificar Cursos Populares" data-rule="A instituição precisa planejar a oferta de cursos para o próximo ano." data-action="Rascunhe uma solicitação para a equipe de BI, pedindo um relatório que cruza dados de 'visualização de página de curso' com 'taxa de inscrição' para identificar os cursos com maior interesse e conversão."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">💡 Identificar Cursos Populares</h4><p class="text-sm"><strong>Cenário:</strong> Planejar oferta de cursos. <strong>Ação:</strong> Usar Query Service para cruzar dados de interesse vs. conversão.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                     <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Uso do Query Service e SQL na Adobe Experience Platform">📝 Me teste!</button></div>
+                </section>
+
+                 <section id="acesso-canais" data-profile="dev">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">👤</span>08. Controle de Acesso e Configuração de Canais</h2>
+                    <p>Gestão de permissões de usuário (roles) no <strong>Adobe Admin Console</strong> e configuração técnica de canais (push, email, etc).</p>
+                    <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                     <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="use-case-card" data-title="Perfis de Acesso Restrito" data-rule="A equipe de marketing da pós-graduação não pode ter acesso às jornadas de graduação." data-action="Rascunhe uma justificativa interna para a TI, explicando a necessidade de criar uma 'role' no Admin Console que restringe o acesso de certos usuários apenas aos segmentos e jornadas da Pós-Graduação."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">🔒 Perfis de Acesso</h4><p class="text-sm"><strong>Cenário:</strong> Equipe de pós só pode acessar conteúdo de pós. <strong>Ação:</strong> Criar uma role com acesso restrito.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                        <div class="use-case-card" data-title="Configurar App do Aluno para Push" data-rule="Precisamos habilitar o envio de notas e avisos por notificação push no app do aluno." data-action="Rascunhe um email para o desenvolvedor do aplicativo, explicando que ele precisa fornecer os certificados Apple (APNs) e as chaves Google (FCM) para serem inseridos na configuração do canal Push no AJO."><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📱 Configurar App do Aluno</h4><p class="text-sm"><strong>Cenário:</strong> Habilitar push no app do aluno. <strong>Ação:</strong> Registrar app no AJO com certificados APNs/FCM.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                    <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Controle de Acesso e Configuração de Canais no AJO">📝 Me teste!</button></div>
+                </section>
+
+                <section id="otimizacao" data-profile="dev,data,mkt">
+                    <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">⚡</span>09. Otimizando Lote e Streaming</h2>
+                    <p>Diferença entre processar dados em <strong>Lote (Batch)</strong>, reavaliados em intervalos programados, e em <strong>Tempo Real (Streaming)</strong>, que ocorrem em segundos.</p>
+                     <h3 class="font-semibold text-xl text-custom-pink-strong pt-4 mt-4">Casos de Uso (Educação)</h3>
+                     <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="use-case-card" data-title="Segmentação em Lote para Newsletter" data-rule="Vamos enviar a newsletter mensal com as novidades da faculdade." data-action="Rascunhe a justificativa de por que usar um segmento em Lote (Batch) é o ideal para este caso: 'Não precisamos de tempo real, e agrupar todos os 'Alunos Ativos' a cada 24h melhora a performance e garante a entrega para a lista correta.'"><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">📅 Segmentação em Lote</h4><p class="text-sm"><strong>Cenário:</strong> Enviar newsletter mensal. <strong>Ação:</strong> Usar segmento em lote que roda a cada 24h.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                        <div class="use-case-card" data-title="Evento de Streaming para Senha" data-rule="Um usuário clica em 'Esqueci minha senha' no portal." data-action="Rascunhe o texto de um email de redefinição de senha, enfatizando a rapidez: 'Recebemos sua solicitação! Use o link abaixo para criar uma nova senha agora mesmo.'"><div class="flex-grow"><h4 class="font-bold text-custom-pink-medium mb-1">🏃‍♂️ Evento de Streaming</h4><p class="text-sm"><strong>Cenário:</strong> Usuário clica em "Esqueci minha senha". <strong>Ação:</strong> Evento de streaming aciona email de redefinição.</p></div><button class="action-button" data-action="draft">✨ Rascunhar Comunicação</button></div>
+                    </div>
+                    <div class="mt-4"><button class="action-button action-button-secondary" data-action="quiz" data-context="Otimização de casos de uso de Lote (Batch) e Streaming">📝 Me teste!</button></div>
+                </section>
+
+            </div>
+            
+            <!-- Área de Rascunhos Salvos -->
+            <section id="saved-drafts-section" class="mt-16">
+                 <h2 class="text-2xl font-semibold text-custom-pink-medium border-b-2 border-custom-pink-subtle pb-3 mb-5 flex items-center"><span class="text-3xl mr-3">📋</span>Meus Rascunhos Salvos</h2>
+                 <div id="saved-drafts-container" class="space-y-4">
+                    <!-- Rascunhos salvos aparecerão aqui -->
+                    <p class="text-gray-500">Você ainda não salvou nenhum rascunho.</p>
+                 </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Gemini Modal -->
+    <div id="gemini-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl transform transition-all">
+            <div class="p-6">
+                <div class="flex items-start justify-between mb-4">
+                    <h3 id="modal-title" class="text-2xl font-semibold text-custom-pink-strong flex items-center">
+                        <span id="modal-icon" class="mr-2">✨</span>
+                        <span id="modal-title-text">Rascunho da IA</span>
+                    </h3>
+                    <button id="close-modal-btn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div id="modal-content" class="bg-custom-pink-highlight p-4 rounded-lg min-h-[200px] text-gray-700 whitespace-pre-wrap overflow-y-auto max-h-[50vh]">
+                    <div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-pink-strong"></div></div>
+                </div>
+                <div class="mt-5 flex justify-between">
+                    <button id="save-draft-btn" class="action-button action-button-secondary">Salvar Rascunho</button>
+                    <div class="flex space-x-3">
+                        <button id="copy-btn" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Copiar</button>
+                        <button id="close-modal-btn-2" class="action-button">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const modal = document.getElementById('gemini-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitleText = document.getElementById('modal-title-text');
+        const modalIcon = document.getElementById('modal-icon');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const closeModalBtn2 = document.getElementById('close-modal-btn-2');
+        const copyBtn = document.getElementById('copy-btn');
+        const saveDraftBtn = document.getElementById('save-draft-btn');
+        const actionButtons = document.querySelectorAll('.action-button');
+        const profileSelector = document.getElementById('profile-selector');
+        const savedDraftsContainer = document.getElementById('saved-drafts-container');
+
+        const loadingSpinner = `<div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-pink-strong"></div></div>`;
+        let currentDraftData = {};
+
+        function openModal(title, icon) {
+            modalTitleText.innerText = title;
+            modalIcon.innerText = icon;
+            modal.style.display = 'flex';
+            saveDraftBtn.style.display = 'none'; // Hide by default
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            modalContent.innerHTML = loadingSpinner;
+            currentDraftData = {};
+        }
+
+        async function handleActionClick(event) {
+            const button = event.target;
+            const action = button.dataset.action;
+            const card = button.closest('.use-case-card');
+            
+            let prompt = '';
+            let modalTitle = 'Rascunho da IA';
+            let modalIcon = '✨';
+            let showSaveButton = false;
+
+            switch (action) {
+                case 'draft':
+                    const title = card.dataset.title;
+                    const rule = card.dataset.rule;
+                    const actionDesc = card.dataset.action;
+                    currentDraftData = { title: `Rascunho: ${title}`, content: '' };
+                    showSaveButton = true;
+                    prompt = `Você é um especialista em marketing para o setor de educação. Baseado no seguinte caso de uso do Adobe Journey Optimizer, escreva um rascunho criativo e profissional da comunicação a ser enviada. O formato da resposta deve ser claro e pronto para uso (ex: se for um email, inclua Assunto e Corpo; se for SMS, seja breve). --- **Caso de Uso:** ${title}\n**Contexto/Regra:** ${rule}\n**Ação Solicitada:** ${actionDesc} --- Produza apenas o rascunho da comunicação.`;
+                    break;
+                
+                case 'quiz':
+                    const contextQuiz = button.dataset.context;
+                    modalTitle = 'Mini Quiz';
+                    modalIcon = '📝';
+                    prompt = `Você é um tutor especialista em Adobe Journey Optimizer. Crie um mini quiz com 3 perguntas de múltipla escolha (com 4 opções cada, indicando a correta com um '*') sobre o seguinte tópico: "${contextQuiz}". Formate como uma lista de perguntas e respostas.`;
+                    break;
+                
+                case 'diagram':
+                    const contextDiagram = button.dataset.context;
+                    modalTitle = 'Diagrama Visual';
+                    modalIcon = '📊';
+                    prompt = `Crie um diagrama de fluxo simples usando caracteres de texto (ASCII art) para ilustrar o seguinte processo: "${contextDiagram}". Use setas (->, -->) e caixas ([ ]) para mostrar o fluxo.`;
+                    break;
+                
+                case 'generate-code':
+                    const inputId = button.dataset.inputId;
+                    const codeType = button.dataset.type.toUpperCase();
+                    const userInput = document.getElementById(inputId).value;
+                    if (!userInput) { alert('Por favor, descreva o que você precisa.'); return; }
+                    modalTitle = `Gerador de Código ${codeType}`;
+                    modalIcon = '⚙️';
+                    currentDraftData = { title: `Código ${codeType}: ${userInput}`, content: '' };
+                    showSaveButton = true;
+                    prompt = `Você é um desenvolvedor especialista em Adobe Experience Platform. Baseado na solicitação do usuário, gere um exemplo de código ${codeType} para o Adobe Journey Optimizer. Adicione comentários explicando as partes principais do código.\n\n**Solicitação:** "${userInput}"`;
+                    break;
+            }
+
+            openModal(modalTitle, modalIcon);
+            if(showSaveButton) saveDraftBtn.style.display = 'block';
+
+            try {
+                const generatedText = await callGemini(prompt);
+                modalContent.innerText = generatedText;
+                if(showSaveButton) currentDraftData.content = generatedText;
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                modalContent.innerText = 'Desculpe, ocorreu um erro ao gerar o texto. Por favor, tente novamente.';
+            }
+        }
+
+        function handleProfileChange() {
+            const selectedProfile = profileSelector.value;
+            const allSections = document.querySelectorAll('section[data-profile]');
+            allSections.forEach(section => {
+                const profiles = section.dataset.profile.split(',');
+                if (selectedProfile === 'todos' || profiles.includes(selectedProfile)) {
+                    section.classList.add('highlight-section');
+                } else {
+                    section.classList.remove('highlight-section');
+                }
+            });
+        }
+        
+        function saveCurrentDraft() {
+            if (!currentDraftData.content) {
+                alert("Não há nada para salvar.");
+                return;
+            }
+            let drafts = JSON.parse(localStorage.getItem('ajo_drafts') || '[]');
+            drafts.unshift(currentDraftData); // Add to the beginning
+            localStorage.setItem('ajo_drafts', JSON.stringify(drafts));
+            loadSavedDrafts();
+            closeModal();
+        }
+
+        function loadSavedDrafts() {
+            let drafts = JSON.parse(localStorage.getItem('ajo_drafts') || '[]');
+            if (drafts.length === 0) {
+                savedDraftsContainer.innerHTML = '<p class="text-gray-500">Você ainda não salvou nenhum rascunho.</p>';
+                return;
+            }
+            savedDraftsContainer.innerHTML = drafts.map((draft, index) => `
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-custom-pink-medium">${draft.title}</h4>
+                        <button class="text-red-500 hover:text-red-700 font-bold" data-draft-index="${index}">&times;</button>
+                    </div>
+                    <pre class="whitespace-pre-wrap text-sm text-gray-600 mt-2 bg-white p-2 rounded">${draft.content}</pre>
+                </div>
+            `).join('');
+            
+            // Add event listeners to delete buttons
+            savedDraftsContainer.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', deleteDraft);
+            });
+        }
+
+        function deleteDraft(event) {
+            const indexToDelete = event.target.dataset.draftIndex;
+            let drafts = JSON.parse(localStorage.getItem('ajo_drafts') || '[]');
+            drafts.splice(indexToDelete, 1);
+            localStorage.setItem('ajo_drafts', JSON.stringify(drafts));
+            loadSavedDrafts();
+        }
+
+        async function callGemini(prompt) {
+            const apiKey = ""; // Será tratado pelo ambiente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+            const result = await response.json();
+            
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                console.error("Unexpected response structure:", result);
+                let errorMessage = "A resposta da API estava em um formato inesperado.";
+                if(result.promptFeedback?.blockReason) {
+                    errorMessage += ` Motivo do bloqueio: ${result.promptFeedback.blockReason}`;
+                }
+                return errorMessage;
+            }
+        }
+
+        function copyModalText() {
+            const textToCopy = modalContent.innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                copyBtn.innerText = 'Copiado!';
+                setTimeout(() => { copyBtn.innerText = 'Copiar'; }, 2000);
+            }).catch(err => console.error('Error copying text: ', err));
+        }
+
+        actionButtons.forEach(button => button.addEventListener('click', handleActionClick));
+        closeModalBtn.addEventListener('click', closeModal);
+        closeModalBtn2.addEventListener('click', closeModal);
+        copyBtn.addEventListener('click', copyModalText);
+        saveDraftBtn.addEventListener('click', saveCurrentDraft);
+        profileSelector.addEventListener('change', handleProfileChange);
+        window.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+        
+        // Initial load
+        document.addEventListener('DOMContentLoaded', loadSavedDrafts);
+    </script>
+</body>
+</html>
